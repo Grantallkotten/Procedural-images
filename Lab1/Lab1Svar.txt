@@ -1,0 +1,95 @@
+1. Test the lab environment. Compile and run lab1.c. Change the existing pattern in some simple way. Colors, frequency, position…
+
+We translated (fx, fy) the origin and changed the colors(fxo and fyo or ptex[x][y][0-->3] == R-->G-->B).
+
+2. Make a substantially different pattern, brick-like pattern or other pattern
+
+ 	float R = 200;
+        float G = 87.0;
+        float B = 51.0;
+/*
+
+	|--> y
+	|
+	V
+	x
+
+*/
+        if(x%40 < 20){// Every outer row on x
+            if(x%20 <= 4 || (y+25)%50 <= 4){ //  draw gray on (x,(translated y)
+                R = 192;
+                G = 192;
+                B = 192;
+        }
+        }  else if(x%20 <= 4 || y%50 <= 4){ //draw gray on (x,y)
+            R = 192;
+            G = 192;
+            B = 192;
+        }
+
+	ptex[x][y][0] = R;
+	ptex[x][y][1] = G;
+	ptex[x][y][2] = B;
+
+3. Use a noise function to produce something (what?)
+
+ float pn1 = noise2(10*fx,10*fy);
+ float pn2 = noise2(2*fx+x%20,2*fy);
+
+ ptex[x][y][0] = pn1*255;
+ ptex[x][y][1] = pn2*255;
+ ptex[x][y][2] = pn2*100;
+
+4. Move to GLSL! Make something similar to step 2 or 3 so you can compare the implementations.
+
+
+	// ======================================================================
+	// Bricks
+	float R = 200;
+        float G = 87.0;
+        float B = 51.0;
+        vec2 cords = texCoord*windowSize;
+
+
+
+        if(mod(cords.y,40) < 20){// Every outer row on x
+            if(mod(cords.y,20) <= 4 || mod(cords.x+25,50) <= 4){ //  draw gray on (x,(translated y)
+                R = 192;
+                G = 192;
+                B = 192;
+        }
+        }  else if(mod(cords.y,20) <= 4 || mod(cords.x,50) <= 4){ //draw gray on (x,y)
+            R = 192;
+            G = 192;
+            B = 192;
+        }
+        out_Color = vec4(R/255, G/255, B/255, 1.0);
+
+        // ======================================================================
+	// Noise
+	vec2 st2 = vec2(20*f.x,20*f.y);
+        float pn1 = noise(10*f);
+        float pn2 = noise(st2*2);
+
+        out_Color = vec4(pn1,pn2,pn1,1.0);
+
+        // ======================================================================
+
+5. Animated texture in GLSL. Hint: glutRepeatingTimer and glutGet(GLUT_ELAPSED_TIME) can be useful.
+
+
+
+	vec2 st1 = vec2(6*f.x+sin(time),6*f.y + 0.4*time);
+        vec2 st2 = vec2(20*f.x,20*f.y - 2*time);
+
+        float pn1 = noise(st1);
+        float pn2 = noise(st2*2);
+
+        out_Color = vec4(pn1,pn2+pn1/2,0.2,1.0);
+
+I C filen:
+92:     float initTime =  0.0;
+188: 	float currentTime = (glutGet(GLUT_ELAPSED_TIME) - initTime)/1000;
+189:    glUniform1f(glGetUniformLocation(program, "time"), currentTime);
+205:    initTime = glutGet(GLUT_ELAPSED_TIME);
+ 
