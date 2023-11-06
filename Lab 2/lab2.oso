@@ -1,0 +1,17 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.13.0.1dev
+# options: -o C:\Users\emiwa076\AppData\Local\Temp\tmpn6uw1_bj.oso -IC:\Program Files\Blender Foundation\Blender\3.6\scripts\addons\cycles\shader
+shader test
+param	float	in_float	1		%read{0,0} %write{2147483647,-1}
+param	color	in_color	1 1 1		%read{1,1} %write{2147483647,-1}
+oparam	float	out_float	0		%read{2147483647,-1} %write{0,0}
+oparam	color	out_color	0 0 0		%read{2147483647,-1} %write{1,1}
+const	float	$const1	2		%read{0,1} %write{2147483647,-1}
+code ___main___
+# \\\\ad.liu.se\\home\\emiwa076\\Desktop\\Procedural-images\\Lab 2\\lab2.osl:9
+# <file not found>
+	mul		out_float in_float $const1 	%filename{"\\\\ad.liu.se\\home\\emiwa076\\Desktop\\Procedural-images\\Lab 2\\lab2.osl"} %line{9} %argrw{"wrr"}
+# \\\\ad.liu.se\\home\\emiwa076\\Desktop\\Procedural-images\\Lab 2\\lab2.osl:10
+# <file not found>
+	mul		out_color in_color $const1 	%line{10} %argrw{"wrr"}
+	end

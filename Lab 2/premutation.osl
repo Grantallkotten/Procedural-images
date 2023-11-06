@@ -1,0 +1,20 @@
+ float hash(
+    float x
+)
+
+{
+    return mod(34*pow(x,2)+10*x,289);
+}
+
+shader premutation(
+    float x = 1.0,
+    float y = 1.0,
+    color in_color = color(1.0, 1.0, 1.0),
+    output color out_color = color(0.0, 0.0, 0.0)
+    )
+{
+    float f = (sin(x) * 1000000);
+    out_color = in_color*(f - int(f))*20;
+}
+
+
