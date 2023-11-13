@@ -1,0 +1,10 @@
+shader basic_shader(
+    float in_float = 1.0,
+    color in_color = color(1.0, 1.0, 1.0),
+    vector in_coords,
+    output float out_float = 0.0,
+    output color out_color = color(0.0, 0.0, 0.0)
+    )
+{
+    out_color = in_color * noise(time)*in_float;
+}

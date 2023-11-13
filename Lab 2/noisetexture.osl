@@ -1,0 +1,15 @@
+shader brick(
+    color Color1 = color(1, 1, 1),
+    color Color2 = color(0, 0, 0),
+    float Size = 8,
+    output color OutColor = 0
+    )
+{
+    point uv = point("texture", UV);
+    
+    // Calculate checkerboard pattern
+    float check = floor(mod(uv[0]/Size, 2)) + floor(mod(uv[1]/Size, 2));
+    
+    // Assign colors based on the pattern
+    OutColor = mix(Color1, Color2, check);
+}
