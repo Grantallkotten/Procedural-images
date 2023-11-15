@@ -109,7 +109,7 @@ gluggModel MakeTree()
     MakeCylinderAlt(20, bodyH, 0.1, 0.15);
     gluggTranslate(0.0f ,bodyH, 0.0f);
     gluggPushMatrix();
-    branch(4,3);
+    branch(3,3);
 
 	return gluggBuildModel(0);
 }
@@ -121,16 +121,16 @@ void branch(int nrBranches, int depth){
 
     double randomValue = 0.5*(-1.0 + static_cast<double>(std::rand()) / RAND_MAX * 2.0);
 
-    for (int j = 0; j < nrBranches; j++){
+    for (int j = 0; j < 3; j++){
         gluggPushMatrix();
-        gluggRotate(j*M_PI/nrBranches + 0.5*randomValue, 0.0f, 1.0f, 0.0f);
+        gluggRotate(j*M_PI/3 + 0.5*randomValue, 0.0f, 1.0f, 0.0f);
         float angle = -M_PI/4;
         float angStep = nrBranches != 1 ? M_PI/(2*(nrBranches-1)) : 0.0f;
         for(int i = 0; i < nrBranches; i++){
 
             gluggPushMatrix();
             gluggRotate(angle + randomValue,0.0f, 0.0f, 1.0f);
-            gluggScale(0.5f, 0.5f, 0.5f);
+            gluggScale(0.5f, 0.7f, 0.5f);
             MakeCylinderAlt(20, 2, 0.1 , 0.15);
             gluggTranslate(0.0f ,2.0f, 0.0f);
             branch(nrBranches-1, depth - 1);
