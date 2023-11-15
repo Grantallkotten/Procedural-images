@@ -3,6 +3,8 @@
 
 // C++ version 2022.
 // Adapted to lastest GLUGG.
+#include <cstdlib>
+#include<iostream>
 
 #define MAIN
 #include "MicroGlut.h"
@@ -11,10 +13,12 @@
 #include "LittleOBJLoaderX.h"
 #include "LoadTGA.h"
 #include "glugg.h"
+#include <ctime>
+
 
 // uses framework OpenGL
 // uses framework Cocoa
-void branch(int nrBranches);
+void branch(int nrBranches, int depth);
 
 void MakeCylinderAlt(int aSlices, float height, float topwidth, float bottomwidth)
 {
@@ -97,34 +101,49 @@ gluggModel MakeTree()
 
 	// Between gluggBegin and gluggEnd, call MakeCylinderAlt plus glugg transformations
 	// to create a tree.
-    int nrBranches = 10;
-    MakeCylinderAlt(20, 3, 0.1, 0.15);
-    gluggTranslate(0.0f ,3.0f, 0.0f);
-    gluggPushMatrix();
-        for(int j = 1; j < 4; j++){
-            gluggRotate(2.0f*3.1415/(j), 0.0f, 1.0f, 0.0f);// rotera kring y
-            gluggPushMatrix();
-            branch(4);
-        }
+	int bodyH = 2;
+    float randomValue1 = 15.0f*(-1.0f + static_cast<float>(std::rand()) / RAND_MAX * 2.0f);
+    float randomValue2 = 15.0f*(-1.0f + static_cast<float>(std::rand()) / RAND_MAX * 2.0f);
 
+    gluggTranslate(randomValue1, 0.0f, randomValue2);
+    MakeCylinderAlt(20, bodyH, 0.1, 0.15);
+    gluggTranslate(0.0f ,bodyH, 0.0f);
+    gluggPushMatrix();
+    branch(4,3);
 
 	return gluggBuildModel(0);
 }
 
-void branch(int nrBranches){
-    if(nrBranches <= 0){
+void branch(int nrBranches, int depth){
+    if(depth <= 0){
         return;
     }
-	MakeCylinderAlt(20, 2, 0.1 , 0.15);
-    gluggTranslate(0.0f ,2.0f, 0.0f);
-    gluggRotate(1.0f,1.0f, 0.0f, 0.0f);
-    gluggScale(0.5f, 0.5f, 0.5f);
-    gluggPushMatrix();
-    branch(nrBranches - 1);
+
+    double randomValue = 0.5*(-1.0 + static_cast<double>(std::rand()) / RAND_MAX * 2.0);
+
+    for (int j = 0; j < nrBranches; j++){
+        gluggPushMatrix();
+        gluggRotate(j*M_PI/nrBranches + 0.5*randomValue, 0.0f, 1.0f, 0.0f);
+        float angle = -M_PI/4;
+        float angStep = nrBranches != 1 ? M_PI/(2*(nrBranches-1)) : 0.0f;
+        for(int i = 0; i < nrBranches; i++){
+
+            gluggPushMatrix();
+            gluggRotate(angle + randomValue,0.0f, 0.0f, 1.0f);
+            gluggScale(0.5f, 0.5f, 0.5f);
+            MakeCylinderAlt(20, 2, 0.1 , 0.15);
+            gluggTranslate(0.0f ,2.0f, 0.0f);
+            branch(nrBranches-1, depth - 1);
+            gluggPopMatrix();
+            angle += angStep;
+        }
+        gluggPopMatrix();
+    }
 
 }
 
 gluggModel tree;
+gluggModel trees[40];
 
 void reshape(int w, int h)
 {
@@ -173,6 +192,10 @@ void init(void)
 	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_T,	GL_REPEAT);
 
 	LoadTGATextureSimple("bark2.tga", &barktex);
+
+	for(int i = 0; i < sizeof(trees) / sizeof(trees[0]); i++){
+        trees[i] = MakeTree();
+	}
 
 	tree = MakeTree();
 
@@ -249,6 +272,10 @@ void display(void)
     m = worldToView * T(0, 0, 0);
     glUniformMatrix4fv(glGetUniformLocation(texShader, "modelviewMatrix"), 1, GL_TRUE, m.m);
 	gluggDrawModel(tree, texShader);
+
+	for(int i = 0; i < sizeof(trees) / sizeof(trees[0]); i++){
+        gluggDrawModel(trees[i], texShader);
+    }
 
 	printError("display");
 

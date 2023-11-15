@@ -278,3 +278,104 @@
 	"VectorUtils4.h"
 	"glugg.h"
 
+1699894316 source:c:\users\wille\documents\github\procedural-images\common\gl_utilities.c
+	<Windows.h>
+	<stdlib.h>
+	<stdio.h>
+	<stddef.h>
+	<string.h>
+	"GL_utilities.h"
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\gl_utilities.h
+	<OpenGL/gl3.h>
+	"glew.h"
+	<GL/gl.h>
+	<GL/gl.h>
+	<stdlib.h>
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\windows\glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<Availability.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1699894316 source:c:\users\wille\documents\github\procedural-images\common\loadtga.c
+	"LoadTGA.h"
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\loadtga.h
+	<OpenGL/gl3.h>
+	"glew.h"
+	<GL/gl.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1699894316 source:c:\users\wille\documents\github\procedural-images\common\windows\glew.c
+	"glew.h"
+	"wglew.h"
+	<GL/glxew.h>
+	<stddef.h>
+	<dlfcn.h>
+	<stdio.h>
+	<stdlib.h>
+	<stdlib.h>
+	<string.h>
+	<AvailabilityMacros.h>
+	<dlfcn.h>
+	<mach-o/dyld.h>
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\windows\wglew.h
+	<windows.h>
+
+1699894316 source:c:\users\wille\documents\github\procedural-images\common\windows\microglut.c
+	<windows.h>
+	"glew.h"
+	<gl/gl.h>
+	"MicroGlut.h"
+	<stdio.h>
+	<io.h>
+	<fcntl.h>
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\windows\microglut.h
+
+1700045099 source:c:\users\wille\documents\github\procedural-images\lab 3a\lab3a.cpp
+	<cstdlib>
+	<iostream>
+	"MicroGlut.h"
+	"GL_utilities.h"
+	"VectorUtils4.h"
+	"LittleOBJLoaderX.h"
+	"LoadTGA.h"
+	"glugg.h"
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\vectorutils4.h
+	<OpenGL/gl3.h>
+	"glew.h"
+	<GL/gl.h>
+	<math.h>
+	<stdio.h>
+
+1699894316 c:\users\wille\documents\github\procedural-images\common\littleobjloaderx.h
+	<OpenGL/gl3.h>
+	"glew.h"
+	<GL/gl.h>
+	"VectorUtils4.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"VectorUtils4.h"
+
+1699894315 c:\users\wille\documents\github\procedural-images\lab 3a\glugg.h
+	"VectorUtils4.h"
+	<math.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"GL_utilities.h"
+	"VectorUtils4.h"
+	"glugg.h"
+
