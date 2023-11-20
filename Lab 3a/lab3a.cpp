@@ -109,7 +109,7 @@ gluggModel MakeTree()
     MakeCylinderAlt(20, bodyH, 0.1, 0.15);
     gluggTranslate(0.0f ,bodyH, 0.0f);
     gluggPushMatrix();
-    branch(3,6);
+    branch(4,5);
 
 	return gluggBuildModel(0);
 }
@@ -133,7 +133,7 @@ void branch(int nrBranches, int depth){
             gluggScale(0.5f, 0.7f, 0.5f);
             MakeCylinderAlt(20, 2, 0.1 , 0.15);
             gluggTranslate(0.0f ,2.0f, 0.0f);
-            branch(nrBranches-1, depth - 1);
+            branch(nrBranches, depth - 1);
             gluggPopMatrix();
             angle += angStep;
         }
@@ -143,7 +143,7 @@ void branch(int nrBranches, int depth){
 }
 
 gluggModel tree;
-gluggModel trees[60];
+gluggModel trees[0];
 
 void reshape(int w, int h)
 {

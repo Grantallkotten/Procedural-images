@@ -32,7 +32,7 @@ GLuint grasstex;
 // Reference to shader programs
 GLuint phongShader, texShader;
 
-#define kTerrainSize 64
+#define kTerrainSize 256
 #define kPolySize 0.5
 
 // Terrain data. To be initialized in MakeTerrain or in the shader
@@ -53,16 +53,23 @@ void MakeTerrain()
 	{
 		int ix = z * kTerrainSize + x;
 
+
+
 		#define bumpHeight 0.5
 		#define bumpWidth 2.0
 
 		// squared distance to center
 		float h = ( (x - kTerrainSize/2)/bumpWidth * (x - kTerrainSize/2)/bumpWidth +  (z - kTerrainSize/2)/bumpWidth * (z - kTerrainSize/2)/bumpWidth );
-		float y = MAX(0, 3-h) * bumpHeight;
-
-		vertices[ix] = vec3(x * kPolySize, y, z * kPolySize);
+		float y = 4;
+        int octaves = 8;
+		float freqStart = 64.0;
+		float height = 0;
+		for(int i = 0; i < octaves; i++){
+            height += snoise2(x/freqStart*(1+i), z/freqStart*(1+i));
+		}
+		vertices[ix] = vec3(x, y * height, z);
 		texCoords[ix] = vec2(x, z);
-		normals[ix] = vec3(0,1,0);
+		normals[ix] = SetVec3(0,1,0);
 	}
 
 	// Make indices
@@ -87,7 +94,14 @@ void MakeTerrain()
 	for (int x = 0; x < kTerrainSize; x++)
 	for (int z = 0; z < kTerrainSize; z++)
 	{
-		normals[z * kTerrainSize + x] = SetVec3(0,1,0);
+	    int ix = z * kTerrainSize + x;
+
+        int left = x > 0 ? z * kTerrainSize + (x - 1) : ix;
+        int right = x < kTerrainSize-1 ? z * kTerrainSize + (x + 1) : ix;
+        int up =  z > 0 ? (z + 1)* kTerrainSize + x : ix;
+        int down = z < kTerrainSize-1 ? (z - 1)* kTerrainSize + x : ix;
+
+        normals[ix] = normalize(cross(vertices[right]-vertices[left],vertices[up]-vertices[down]));
 	}
 }
 
@@ -122,7 +136,8 @@ void init(void)
 
 	glUseProgram(texShader);
 	glUniformMatrix4fv(glGetUniformLocation(texShader, "projectionMatrix"), 1, GL_TRUE, projectionMatrix.m);
-	glUniform1i(glGetUniformLocation(texShader, "tex"), 0); // Texture unit 0
+	glUniform1i(glGetUniformLocation(texShader, "tex"), 0
+             ); // Texture unit 0
 
 	LoadTGATextureSimple("grass.tga", &grasstex);
 	glBindTexture(GL_TEXTURE_2D, grasstex);
@@ -146,13 +161,13 @@ void display(void)
 	mat4 worldToView, m;
 
 	if (glutKeyIsDown('a'))
-		forward = mat3(Ry(0.03))* forward;
+		forward = mat3(Ry(0.06))* forward;
 	if (glutKeyIsDown('d'))
-		forward = mat3(Ry(-0.03)) * forward;
+		forward = mat3(Ry(-0.06)) * forward;
 	if (glutKeyIsDown('w'))
-		campos = campos + forward * 0.01;
+		campos = campos + forward * 0.03;
 	if (glutKeyIsDown('s'))
-		campos = campos - forward * 0.01;
+		campos = campos - forward * 0.03;
 	if (glutKeyIsDown('q'))
 	{
 		vec3 side = cross(forward, vec3(0,1,0));
@@ -165,10 +180,12 @@ void display(void)
 	}
 
 	// Move up/down
-	if (glutKeyIsDown('z'))
+	if (glutKeyIsDown(29))
 		campos = campos + vec3(0,1,0) * 0.01;
-	if (glutKeyIsDown('c'))
+	if (glutKeyIsDown(31))
 		campos = campos - vec3(0,1,0) * 0.01;
+    //campos.y = 1.0f;
+    campos.y = vertices[(int)campos.z * kTerrainSize + (int)campos.x].y + 1.2;
 
 	// NOTE: Looking up and down is done by making a side vector and rotation around arbitrary axis!
 	if (glutKeyIsDown('+'))

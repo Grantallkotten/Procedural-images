@@ -2,20 +2,24 @@
 
 out vec4 outColor;
 
+in float y;
 in vec2 texCoord;
 in vec3 exNormal;
 uniform sampler2D tex;
+
 
 void main(void)
 {
 	// Texture from disc
 	vec4 t = texture(tex, texCoord);
-	
+	float h = 3.5;
+
 	// Procedural texture
-	t.r = sin(texCoord.s * 3.1416);
-	t.g = sin(texCoord.t * 3.1416);
-	t.b = sin((texCoord.s + texCoord.t) * 10.0);
-	
+	if(y > h){
+		t.r += 0.8;
+		t.g += 0.8;
+		t.b += 0.8;
+	}
 	vec3 n = normalize(exNormal);
 	float shade = n.y + n.z;
 //	if (t.a < 0.01) discard;

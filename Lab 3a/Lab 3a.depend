@@ -242,13 +242,16 @@
 
 1621844928 \\ad.liu.se\home\emiwa076\desktop\procedural-images\common\windows\microglut.h
 
-1699890032 source:\\ad.liu.se\home\emiwa076\desktop\procedural-images\lab 3a\lab3a.cpp
+1700490045 source:\\ad.liu.se\home\emiwa076\desktop\procedural-images\lab 3a\lab3a.cpp
+	<cstdlib>
+	<iostream>
 	"MicroGlut.h"
 	"GL_utilities.h"
 	"VectorUtils4.h"
 	"LittleOBJLoaderX.h"
 	"LoadTGA.h"
 	"glugg.h"
+	<ctime>
 
 1694452438 \\ad.liu.se\home\emiwa076\desktop\procedural-images\common\vectorutils4.h
 	<OpenGL/gl3.h>
