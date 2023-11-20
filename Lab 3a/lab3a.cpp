@@ -109,7 +109,7 @@ gluggModel MakeTree()
     MakeCylinderAlt(20, bodyH, 0.1, 0.15);
     gluggTranslate(0.0f ,bodyH, 0.0f);
     gluggPushMatrix();
-    branch(3,3);
+    branch(3,6);
 
 	return gluggBuildModel(0);
 }
@@ -143,7 +143,7 @@ void branch(int nrBranches, int depth){
 }
 
 gluggModel tree;
-gluggModel trees[40];
+gluggModel trees[60];
 
 void reshape(int w, int h)
 {
@@ -160,7 +160,7 @@ void reshape(int w, int h)
 void init(void)
 {
 	// GL inits
-	glClearColor(0.4,0.6,0.8,0);
+	glClearColor(0.3,0.5,0.8,0);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -216,20 +216,20 @@ void display(void)
 
 	mat4 worldToView, m; // m1, m2, m, tr, scale;
 
-	if (glutKeyIsDown('a'))
+	if (glutKeyIsDown(28))
 		forward = mat3(Ry(0.05))* forward;
-	if (glutKeyIsDown('d'))
+	if (glutKeyIsDown(30))
 		forward = mat3(Ry(-0.05)) * forward;
 	if (glutKeyIsDown('w'))
 		campos = campos + forward * 0.1;
 	if (glutKeyIsDown('s'))
 		campos = campos - forward * 0.1;
-	if (glutKeyIsDown('q'))
+	if (glutKeyIsDown('a'))
 	{
 		vec3 side = cross(forward, vec3(0,1,0));
 		campos = campos - side * 0.05;
 	}
-	if (glutKeyIsDown('e'))
+	if (glutKeyIsDown('d'))
 	{
 		vec3 side = cross(forward, vec3(0,1,0));
 		campos = campos + side * 0.05;
@@ -238,6 +238,10 @@ void display(void)
 	// Move up/down
 	if (glutKeyIsDown('z'))
 		campos = campos + vec3(0,1,0) * 0.01;
+    if (glutKeyIsDown(32))
+		campos = campos + vec3(0,1,0) * 0.1;
+    if (glutKeyIsDown('r'))
+		campos.y = 1.0f;// To fall down
 	if (glutKeyIsDown('c'))
 		campos = campos - vec3(0,1,0) * 0.01;
 

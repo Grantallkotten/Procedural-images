@@ -341,7 +341,7 @@
 
 1699894316 c:\users\wille\documents\github\procedural-images\common\windows\microglut.h
 
-1700045099 source:c:\users\wille\documents\github\procedural-images\lab 3a\lab3a.cpp
+1700231188 source:c:\users\wille\documents\github\procedural-images\lab 3a\lab3a.cpp
 	<cstdlib>
 	<iostream>
 	"MicroGlut.h"
@@ -350,6 +350,7 @@
 	"LittleOBJLoaderX.h"
 	"LoadTGA.h"
 	"glugg.h"
+	<ctime>
 
 1699894316 c:\users\wille\documents\github\procedural-images\common\vectorutils4.h
 	<OpenGL/gl3.h>
