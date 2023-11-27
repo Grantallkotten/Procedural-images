@@ -8,6 +8,7 @@ in vec2 teTexCoord[3];
 in vec3 teNormal[3];
 out vec2 gsTexCoord;
 out vec3 gsNormal;
+out float gsHeight;
 uniform sampler2D tex;
 
 uniform mat4 projMatrix;
@@ -72,19 +73,24 @@ float noise(vec3 st)
 }
 
 float fbm(vec3 st){
-    int octaves = 4;
-    float freq = 4;
+    int octaves = 8;
+    float lancunarity = 2;
+    float freq = 3;
     vec3 offset = vec3(1,1,1);
-    float amp = 2.0;
-    float depthGain = pow(2,-3);// Ändra på -x
+    float amp = 0.2;
+    float depthGain = pow(2,-5);// Ändra på -x
+    float height = 0.0;
 
-
-    float height = 0;
     for(int i = 0; i < octaves; i++){
-        height += noise(st/freq*(i*2) + offset)* amp;
+        height += noise(st*freq + offset*i) * amp;
         amp *= depthGain;
+        freq *= lancunarity;
     }
-    return height + 1;
+    height += 1;
+    if(height < 1.01){
+        height = 1;
+    }
+    return height;
 
 }
 
@@ -97,16 +103,42 @@ void computeVertex(int nr)
 	// Add interesting code here
     // ======================================================================================
 
-    p = normalize(p);
-    p *= fbm(p);
+
+    vec3 p_n = normalize(p);
+    gsHeight = fbm(p_n);
+    p = p_n* gsHeight;
+
+    float stepSize = 0.00001;
+    if(abs(dot(p_n,vec3(1.0, .0, .0))) < 0.9){
+        v1 = vec3(1.0, .0, .0);
+    }
+    else{
+        v1 = vec3(.0, 1.0, 0.0);
+    }
+
+    v1 = cross(p_n,v1);
+    p1 = p_n + v1 *stepSize;
+    p1 = p1* fbm(p1);
+
+    v2 = cross(p_n,v1);
+    p2 = p_n + v2 *stepSize;
+    p2 = p2* fbm(p2);
+
+    v3 = -v1 - v2;
+    p3 = p_n + v3 *stepSize;
+    p3 = p3* fbm(p3);
+
+    v1 = (p2 - p1);
+    v2 = (p3 - p1);
 
 
+    n = normalize(cross(v1,v2));
 	// ======================================================================================
 	gl_Position = projMatrix * camMatrix * mdlMatrix * vec4(p, 1.0);
 
     gsTexCoord = teTexCoord[0];
 
-	n = teNormal[nr]; // This is not the normal you are looking for. Move along!
+	//n = teNormal[nr]; // This is not the normal you are looking for. Move along!
     gsNormal = mat3(camMatrix * mdlMatrix) * n;
 
     EmitVertex();
