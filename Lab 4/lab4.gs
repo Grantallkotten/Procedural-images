@@ -2,8 +2,8 @@
 
 layout(triangles) in;
 // Use line_strip for visualization and triangle_strip for solids
-//layout(triangle_strip, max_vertices = 3) out;
-layout(line_strip, max_vertices = 3) out;
+layout(triangle_strip, max_vertices = 3) out;
+//layout(line_strip, max_vertices = 3) out;
 in vec2 teTexCoord[3];
 in vec3 teNormal[3];
 out vec2 gsTexCoord;
@@ -71,18 +71,44 @@ float noise(vec3 st)
           	);
 }
 
+float fbm(vec3 st){
+    int octaves = 4;
+    float freq = 4;
+    vec3 offset = vec3(1,1,1);
+    float amp = 2.0;
+    float depthGain = pow(2,-3);// Ändra på -x
+
+
+    float height = 0;
+    for(int i = 0; i < octaves; i++){
+        height += noise(st/freq*(i*2) + offset)* amp;
+        amp *= depthGain;
+    }
+    return height + 1;
+
+}
+
 void computeVertex(int nr)
 {
 	vec3 p, v1, v2, v3, p1, p2, p3, s1, s2, n;
 
 	p = vec3(gl_in[nr].gl_Position);
+
 	// Add interesting code here
+    // ======================================================================================
+
+    p = normalize(p);
+    p *= fbm(p);
+
+
+	// ======================================================================================
 	gl_Position = projMatrix * camMatrix * mdlMatrix * vec4(p, 1.0);
 
     gsTexCoord = teTexCoord[0];
 
 	n = teNormal[nr]; // This is not the normal you are looking for. Move along!
     gsNormal = mat3(camMatrix * mdlMatrix) * n;
+
     EmitVertex();
 }
 
